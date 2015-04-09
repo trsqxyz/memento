@@ -33,20 +33,34 @@ class Mori(object):
             return
 
     def pomodoro(self):
+        done_pomodoro = 0
         short_break = "Done! Take a short break."
         long_break = "Goal! Take a long break."
         begin_pomodoro = "Begin to the task."
-        perfect_day = "You've done {0} tasks today. It's a perfect.".format(done_tasks)
-        one_pomodoro = [short_break, begin_pomodoro]
-        one_goal = [long_break] + one_pomodoro * 4
-        one_day = one_goal * 4
+        perfect_day = "It's a perfect."
 
-        while not self.stop_event.is_set():
-            try:
-                print(next(self.msg))
-                time.sleep(60*5)
-            except (KeyboardInterrupt, StopIteration):
-                self.stop()
+        one_pomodoro = (begin_pomodoro, short_break)
+        fourth_pomodoro = (begin_pomodoro, None)
+        one_long_break = (long_break, None)
+        finish = (begin_pomodoro, perfect_day)
+
+        one_goal = tuple(one_pomodoro for _ in range(3)) + (one_long_break,)
+        last_goal = one_goal[:-1] + (finish,)
+        one_day = tuple(one_goal for _ in range(3)) + (last_goal,)
+
+        for goal in one_day:
+            for first, last in goal:
+                self.msg = self.life(4, first, last)
+                try:
+                    self.time_keeper()
+                except KeyboardInterrupt:
+                    print("You've done {0} pomodoro today.".format(done_pomodoro))
+                    return
+                except StopIteration:
+                    if last == short_break:
+                        done_pomodoro += 1
+                    elif last == perfect_day:
+                        print("You've done {0} pomodoro today.".format(done_pomodoro))
 
     def stop(self):
         self.stop_event.set()
@@ -60,4 +74,4 @@ class Mori(object):
         yield last
 
 if __name__ == '__main__':
-    m = Mori('mori')
+    m = Mori(mode, times)
