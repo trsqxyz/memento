@@ -7,24 +7,30 @@ import sys
 
 class Mori(object):
     """docstring for Mori"""
-    def __init__(self, mode=None, times=5):
+    def __init__(self, mode=None, times=4):
         self.mode = {
             'mori': self.mori,
             'pomodoro': self.pomodoro,
             None: self.mori
             }
         self.msg = self.life(times)
-        self.stop_event = threading.Event()
-        self.t = threading.Timer(1, self.mode[mode])
-        self.t.start()
+        self.mode[mode]()
 
-    def mori(self):
-        while not self.stop_event.is_set():
+    def time_keeper(self):
+        while True:
             try:
                 print(next(self.msg))
-                time.sleep(60*5)
-            except (KeyboardInterrupt, StopIteration):
-                self.stop()
+            except (KeyboardInterrupt, StopIteration) as e:
+                raise e
+            time.sleep(60*5)
+
+    def mori(self):
+        time.sleep(60*5)
+        print(next(self.msg))
+        try:
+            self.time_keeper()
+        except (KeyboardInterrupt, StopIteration):
+            return
 
     def pomodoro(self):
         short_break = "Done! Take a short break."
@@ -45,10 +51,13 @@ class Mori(object):
     def stop(self):
         self.stop_event.set()
 
-    def life(self, times, m=None):
+    def life(self, times=3, first='*', last=None):
+        yield first
         for _ in range(times):
-            if m is None: m = '*'
-            m = yield m
+            yield '*'
+        if last is None:
+            raise StopIteration
+        yield last
 
 if __name__ == '__main__':
     m = Mori('mori')
