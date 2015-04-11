@@ -25,9 +25,8 @@ class Mori(object):
             time.sleep(60*5)
 
     def mori(self):
-        time.sleep(60*5)
-        print(next(self.msg))
         try:
+            time.sleep(60*5)
             self.time_keeper()
         except (KeyboardInterrupt, StopIteration):
             return
@@ -36,7 +35,7 @@ class Mori(object):
         done_pomodoro = 0
         short_break = "Done! Take a short break."
         long_break = "Goal! Take a long break."
-        begin_pomodoro = "Begin to the task."
+        begin_pomodoro = "Begin the task."
         perfect_day = "It's a perfect."
 
         one_pomodoro = (begin_pomodoro, short_break)
@@ -44,7 +43,8 @@ class Mori(object):
         one_long_break = (long_break, None)
         finish = (begin_pomodoro, perfect_day)
 
-        one_goal = tuple(one_pomodoro for _ in range(3)) + (one_long_break,)
+        one_goal = tuple(one_pomodoro for _ in range(3)) + \
+                    (fourth_pomodoro,) + (one_long_break,)
         last_goal = one_goal[:-1] + (finish,)
         one_day = tuple(one_goal for _ in range(3)) + (last_goal,)
 
@@ -65,7 +65,7 @@ class Mori(object):
     def stop(self):
         self.stop_event.set()
 
-    def life(self, times=3, first='*', last=None):
+    def life(self, times=4, first='*', last=None):
         yield first
         for _ in range(times):
             yield '*'
@@ -74,4 +74,12 @@ class Mori(object):
         yield last
 
 if __name__ == '__main__':
+    try:
+        mode = sys.argv[1]
+    except IndexError:
+        mode = None
+    try:
+        times = int(sys.argv[2])
+    except IndexError:
+        times = 4
     m = Mori(mode, times)
