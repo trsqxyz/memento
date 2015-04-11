@@ -25,9 +25,8 @@ class Mori(object):
             time.sleep(60*5)
 
     def mori(self):
-        time.sleep(60*5)
-        print(next(self.msg))
         try:
+            time.sleep(60*5)
             self.time_keeper()
         except (KeyboardInterrupt, StopIteration):
             return
