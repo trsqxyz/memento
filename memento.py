@@ -74,4 +74,12 @@ class Mori(object):
         yield last
 
 if __name__ == '__main__':
+    try:
+        mode = sys.argv[1]
+    except IndexError:
+        mode = None
+    try:
+        times = int(sys.argv[2])
+    except IndexError:
+        times = 4
     m = Mori(mode, times)
