@@ -43,7 +43,8 @@ class Mori(object):
         one_long_break = (long_break, None)
         finish = (begin_pomodoro, perfect_day)
 
-        one_goal = tuple(one_pomodoro for _ in range(3)) + (one_long_break,)
+        one_goal = tuple(one_pomodoro for _ in range(3)) + \
+                    (fourth_pomodoro,) + (one_long_break,)
         last_goal = one_goal[:-1] + (finish,)
         one_day = tuple(one_goal for _ in range(3)) + (last_goal,)
 
