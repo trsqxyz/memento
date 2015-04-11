@@ -65,7 +65,7 @@ class Mori(object):
     def stop(self):
         self.stop_event.set()
 
-    def life(self, times=3, first='*', last=None):
+    def life(self, times=4, first='*', last=None):
         yield first
         for _ in range(times):
             yield '*'
