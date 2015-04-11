@@ -35,7 +35,7 @@ class Mori(object):
         done_pomodoro = 0
         short_break = "Done! Take a short break."
         long_break = "Goal! Take a long break."
-        begin_pomodoro = "Begin to the task."
+        begin_pomodoro = "Begin the task."
         perfect_day = "It's a perfect."
 
         one_pomodoro = (begin_pomodoro, short_break)
